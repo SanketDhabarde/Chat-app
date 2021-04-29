@@ -14,6 +14,7 @@ function Chat() {
     const sendMessage = (event) => {
         event.preventDefault();
         console.log("you typed ==>", input);
+        setInput('');
     }
     return (
         <div className="chat">
