@@ -9,6 +9,11 @@
     background-color: #ebebeb;
 }
 
+a{
+    text-decoration: none !important;
+    color: black;
+}
+
 .sidebarChat__info{
     margin-left: 10px;
 }
