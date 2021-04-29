@@ -4,13 +4,18 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import './Chat.css';
 import db from '../../firebase';
+import { useStateValue } from '../../StateProvider';
+import firebase from 'firebase';
 
 function Chat() {
     const [input, setInput] = useState('');
     const [seed, setSeed] = useState('');
     const { roomId } = useParams();
+    const [messages, setMessages] = useState([]);
     
     const [roomName, setRoomName] = useState('');
+
+    const [{ user }, dispatch] = useStateValue();
 
     useEffect(() => {
         if(roomId){
@@ -18,6 +23,15 @@ function Chat() {
             db.collection('rooms').doc(roomId).onSnapshot(snapshot => (
                 setRoomName(snapshot.data().name)
             ));
+
+            // pull the messages from db to specific roomId
+            db.collection('rooms')
+                .doc(roomId)
+                .collection('messages')
+                .orderBy('timestamp', 'asc')
+                .onSnapshot(snapshot => (
+                    setMessages(snapshot.docs.map(doc => doc.data()))
+                ));
         }
     }, [roomId])
 
@@ -28,7 +42,14 @@ function Chat() {
 
     const sendMessage = (event) => {
         event.preventDefault();
-        console.log("you typed ==>", input);
+        
+        // add message to db
+        db.collection('rooms').doc(roomId).collection('messages').add({
+            name: user.displayName,
+            message: input,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
         setInput('');
     }
     return (
@@ -53,11 +74,16 @@ function Chat() {
             </div>
 
             <div className="chat__body">
-                <p className={`chat_message ${ true && "chat__receiver"}`}>
-                    <span className="chat__username">Sanket Dhabarde</span>
-                    hey guys
-                    <span className="chat__timestamp">6:23</span>
-                </p>
+                {messages.map(message => (
+                    <p className={`chat_message ${ message.name === user.displayName && "chat__receiver"}`}>
+                        <span className="chat__username">{message.name}</span>
+                        {message.message}
+                        <span className="chat__timestamp">
+                           {new Date(message.timestamp?.toDate()).toUTCString()}
+                        </span>
+                    </p>
+                ))}
+                
                 
             </div>
 
