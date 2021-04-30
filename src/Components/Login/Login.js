@@ -1,22 +1,14 @@
 import { Button } from '@material-ui/core';
-import React from 'react';
+import React, { useContext } from 'react';
+import { AuthContext } from '../../context/auth-context';
 import './Login.css';
-import {auth, provider} from '../../firebase';
-import { useStateValue } from '../../StateProvider';
-import { actionTypes } from '../../reducer';
+
 
 function Login() {
-    const [{}, dispatch] = useStateValue();
+    const authContext = useContext(AuthContext);
 
     const signin = () => {
-        auth.signInWithPopup(provider)
-            .then(result => {
-                dispatch({
-                    type: actionTypes.SET_USER,
-                    user: result.user
-                })
-            })
-            .catch(error => console.log(error))
+        authContext.login();
     }
     return (
         <div className="login">

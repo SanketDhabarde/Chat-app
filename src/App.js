@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 import './App.css';
 import Chat from './Components/Chat/Chat';
 import Login from './Components/Login/Login';
 import Sidebar from './Components/Sidebar/Sidebar';
-import { useStateValue } from './StateProvider';
+import { AuthContext } from './context/auth-context'; 
 
 function App() {
-  const [{ user }, dispatch] = useStateValue();
+  const authContext = useContext(AuthContext);
   
   return (
     <div className="app">
-      { !user ? (
+      { !authContext.user ? (
         <Login/>
       ): (
         <div className="app__body">
