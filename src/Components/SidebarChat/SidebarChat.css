@@ -3,6 +3,7 @@
     align-items: center;
     cursor: pointer;
     padding: 20px;
+    border-bottom: 1px solid #f6f6f6;
 }
 
 .sidebarChat:hover{
@@ -16,4 +17,5 @@ a{
 
 .sidebarChat__info{
     margin-left: 10px;
+    flex: 1;
 }
