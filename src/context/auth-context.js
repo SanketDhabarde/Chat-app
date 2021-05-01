@@ -14,6 +14,7 @@ const AuthContextProvider = props => {
             .then(result => setUser(result.user))
             .catch(error => console.log(error))
     }
+
     return (
         <AuthContext.Provider value={{user: user, login: loginHandler}}>
             {props.children}

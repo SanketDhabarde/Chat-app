@@ -1,4 +1,4 @@
-import { Avatar, IconButton } from '@material-ui/core';
+import { Avatar, IconButton} from '@material-ui/core';
 import { SearchOutlined } from '@material-ui/icons';
 import ChatIcon from '@material-ui/icons/Chat';
 import DonutLargeIcon from '@material-ui/icons/DonutLarge';
@@ -14,7 +14,6 @@ function Sidebar() {
     const [rooms, setRooms] = useState([]);
     const [enteredFilter, setEnteredFilter] = useState('');
     const [filteredRooms, setFilteredRooms] = useState([]);
-
     const inputRef = useRef();
 
     useEffect(()=> {
@@ -40,7 +39,7 @@ function Sidebar() {
                     })))
                 });
             }  
-        }, 1000);
+        }, 500);
 
         return () => {
             clearTimeout(timer);
@@ -60,8 +59,8 @@ function Sidebar() {
                     <IconButton>
                         <ChatIcon/>
                     </IconButton>
-                    <IconButton>
-                        <MoreVertIcon/>    
+                    <IconButton >
+                        <MoreVertIcon/>      
                     </IconButton>
                     
                 </div>

@@ -41,7 +41,7 @@
     background-color: #fff;
     border-radius: 10px;
     width: fit-content;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     font-size: 16px;
 }
 
@@ -66,6 +66,39 @@
     margin-top: 15px;
 }
 
+.chat_Img{
+    position: relative;
+    padding: 5px;
+    background-color: #fff;
+    border-radius: 10px;
+    max-width: 400px;
+    margin-bottom: 25px;
+}
+
+.chat__image{
+    width: 100%;
+    object-fit: contain;
+}
+
+
+.chat__receiverImg{
+    margin-left: auto;
+    background-color: #dcf8c6;
+}
+
+.chat__usernameImg{
+    position: absolute;
+    font-size: xx-small;
+    font-weight: 700;
+    display: flex;
+    top: -15px;
+}
+
+.chat__timestampImg{
+    font-size: xx-small;
+    bottom: 0;
+}
+
 .chat__footer{
     display: flex;
     justify-content: space-between;
@@ -78,6 +111,19 @@
     flex:1;
     display: flex;
 }
+
+label input{
+    width: 0;
+    height: 0;
+}
+label{
+    display: block;
+    width: 30px;
+    height: 30px;
+    margin: 0 auto;
+    padding-top: 6px;
+}
+
 
 .chat__footer > form > input {
     border: none;
