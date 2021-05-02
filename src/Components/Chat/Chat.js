@@ -45,7 +45,7 @@ function Chat() {
             const storageRef=storage.ref(file.name);
 
             storageRef.put(file).on('state_changed', (snap) => {
-                let progress= (snap.bytesTransferred/snap.totalBytes)/100;
+                let progress= (snap.bytesTransferred/snap.totalBytes)*100;
                 setProgress(progress);
             }, (error) => {
                 alert(error.message);
@@ -171,7 +171,7 @@ function Chat() {
                     >
                         <Typography className="chat__emojis">
                             {emojis.map(emoji => (
-                                <span className="chat__emoji" onClick={() => emojiHandler(emoji)}>{emoji}</span>
+                                <span className="chat__emoji" key={emoji} onClick={() => emojiHandler(emoji)}>{emoji}</span>
                             ))}
                         </Typography>
                     </Popover>

@@ -4,7 +4,7 @@ import './SidebarChat.css';
 import db from '../../firebase';
 import { Link } from 'react-router-dom';
 
-function SidebarChat({id, name, addNew}) {
+function SidebarChat({id, name}) {
     const [seed, setSeed] = useState('');
     const [messages, setMessages] = useState([]);
 
@@ -23,17 +23,7 @@ function SidebarChat({id, name, addNew}) {
         }
     }, [id])
 
-    const addNewChat = () => {
-        const roomName = prompt("Add a room Name");
-
-        // add into database
-        db.collection('rooms').add({
-            name: roomName,
-        });
-    }
-
-    
-    return !addNew ? (
+    return (
         <Link to={`/rooms/${id}`}>
             <div className="sidebarChat">
                 <Avatar src={`https://avatars.dicebear.com/api/human/${seed}.svg`}/>
@@ -44,10 +34,6 @@ function SidebarChat({id, name, addNew}) {
             </div>
         </Link>
         
-    ): (
-        <div className="sidebarChat" onClick={addNewChat}>
-            <h2>Add new chat room</h2>
-        </div>
     )
 }
 

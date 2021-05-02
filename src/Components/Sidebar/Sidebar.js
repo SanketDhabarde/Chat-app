@@ -1,4 +1,4 @@
-import { Avatar, IconButton} from '@material-ui/core';
+import { Avatar, IconButton, Menu, MenuItem} from '@material-ui/core';
 import { SearchOutlined } from '@material-ui/icons';
 import ChatIcon from '@material-ui/icons/Chat';
 import DonutLargeIcon from '@material-ui/icons/DonutLarge';
@@ -8,6 +8,7 @@ import SidebarChat from '../SidebarChat/SidebarChat';
 import './Sidebar.css';
 import db from '../../firebase';
 import { AuthContext} from '../../context/auth-context';
+import { Redirect, Route } from 'react-router';
 
 function Sidebar() {
     const authContext = useContext(AuthContext);
@@ -15,6 +16,10 @@ function Sidebar() {
     const [enteredFilter, setEnteredFilter] = useState('');
     const [filteredRooms, setFilteredRooms] = useState([]);
     const inputRef = useRef();
+
+    const [anchorEl, setAnchorEl] = useState(null);
+
+ 
 
     useEffect(()=> {
        const unsubscribe= db.collection('rooms').onSnapshot(snapshot => {
@@ -45,8 +50,27 @@ function Sidebar() {
             clearTimeout(timer);
         }
         
-    }, [enteredFilter, inputRef])
+    }, [enteredFilter, inputRef]);
 
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    
+    const addNewChat = () => {
+        const roomName = prompt("Add a room Name");
+
+        // add into database
+        db.collection('rooms').add({
+            name: roomName,
+        });
+
+        setAnchorEl(null);
+    }
 
     return (
         <div className="sidebar">
@@ -59,10 +83,22 @@ function Sidebar() {
                     <IconButton>
                         <ChatIcon/>
                     </IconButton>
-                    <IconButton >
-                        <MoreVertIcon/>      
-                    </IconButton>
                     
+                    <div>
+                        <IconButton aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
+                            <MoreVertIcon/>      
+                        </IconButton>
+                        <Menu
+                            id="simple-menu"
+                            anchorEl={anchorEl}
+                            keepMounted
+                            open={Boolean(anchorEl)}
+                            onClose={handleClose}
+                        >
+                            <MenuItem onClick={addNewChat}>Add room</MenuItem>
+                          
+                        </Menu>
+                    </div>
                 </div>
             </div>
             <div className="sidebar__search">
@@ -77,7 +113,6 @@ function Sidebar() {
                 </div>  
             </div>
             <div className="sidebar__chats">
-                <SidebarChat addNew/>
                 { !enteredFilter ?
                     rooms.map(room => (
                         <SidebarChat key={room.id} id={room.id} name={room.data.name}/>

@@ -1,5 +1,6 @@
 import { Button } from '@material-ui/core';
 import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
 import { AuthContext } from '../../context/auth-context';
 import './Login.css';
 
@@ -18,8 +19,10 @@ function Login() {
                  <div className="login__text">
                      <h1>sign in to WhatsApp</h1>
                  </div>
-
-                 <Button onClick={signin}>Sign in with Google</Button>
+                <Link to="/rooms">
+                    <Button onClick={signin}>Sign in with Google</Button>
+                </Link>
+                 
             </div>
         </div>
     )

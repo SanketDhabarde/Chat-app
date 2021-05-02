@@ -12,17 +12,22 @@ function App() {
   return (
     <div className="app">
       { !authContext.user ? (
-        <Login/>
+        <Router>
+          <Login/>
+        </Router>
       ): (
         <div className="app__body">
           <Router>
-              <Sidebar/>
               <Switch>
                   <Route path="/rooms/:roomId">
+                      <Sidebar/>
                       <Chat/>
                   </Route>
-                  <Route path="/">
-                      <Chat/>
+                  <Route path="/rooms" exact>
+                    <Sidebar/>
+                  </Route>
+                  <Route path="/" exact>
+                      <Login/>
                   </Route>
               </Switch>
           </Router>
