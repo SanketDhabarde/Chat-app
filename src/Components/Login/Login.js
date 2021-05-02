@@ -19,7 +19,7 @@ function Login() {
                  <div className="login__text">
                      <h1>sign in to WhatsApp</h1>
                  </div>
-                <Link to="/rooms">
+                <Link to="/rooms" exact>
                     <Button onClick={signin}>Sign in with Google</Button>
                 </Link>
                  

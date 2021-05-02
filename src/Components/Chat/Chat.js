@@ -119,19 +119,12 @@ function Chat() {
                     <h3>{roomName}</h3>
                     <p>last seen {new Date(messages[messages.length - 1]?.timestamp?.toDate()).toUTCString()}</p>
                 </div>
-                <div className="chat__headerRight">
-                    <IconButton>
-                        <SearchOutlined/>
-                    </IconButton>
-                    <IconButton>
-                        <MoreVert/>
-                    </IconButton>
-                </div>
+                
             </div>
 
             <div className="chat__body">
                 {messages.map(message => !message.url ? (
-                    <p className={`chat_message ${ message.name === authContext.user.displayName && "chat__receiver"}`}>
+                    <p key={message.timestamp} className={`chat_message ${ message.name === authContext.user.displayName && "chat__receiver"}`}>
                         <span className="chat__username">{message.name}</span>
                         {message.message}
                         <span className="chat__timestamp">
@@ -139,7 +132,7 @@ function Chat() {
                         </span>
                     </p>
                 ): (
-                    <div className={`chat_Img ${ message.name === authContext.user.displayName && "chat__receiverImg"}`}>
+                    <div key={message.timestamp} className={`chat_Img ${ message.name === authContext.user.displayName && "chat__receiverImg"}`}>
                         <span className="chat__usernameImg">{message.name}</span>
                         <img className="chat__image" src={message.url}></img>
                         <p className="chat__timestampImg">

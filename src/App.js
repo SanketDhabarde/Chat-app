@@ -19,7 +19,7 @@ function App() {
         <div className="app__body">
           <Router>
               <Switch>
-                  <Route path="/rooms/:roomId">
+                  <Route path="/rooms/:roomId" exact>
                       <Sidebar/>
                       <Chat/>
                   </Route>

@@ -8,7 +8,7 @@ import SidebarChat from '../SidebarChat/SidebarChat';
 import './Sidebar.css';
 import db from '../../firebase';
 import { AuthContext} from '../../context/auth-context';
-import { Redirect, Route } from 'react-router';
+
 
 function Sidebar() {
     const authContext = useContext(AuthContext);
@@ -72,6 +72,11 @@ function Sidebar() {
         setAnchorEl(null);
     }
 
+    const logout = () => {
+        authContext.logout();
+        setAnchorEl(null);
+    }
+
     return (
         <div className="sidebar">
             <div className="sidebar__header">
@@ -96,7 +101,7 @@ function Sidebar() {
                             onClose={handleClose}
                         >
                             <MenuItem onClick={addNewChat}>Add room</MenuItem>
-                          
+                            <MenuItem onClick={logout}>logout</MenuItem>
                         </Menu>
                     </div>
                 </div>
