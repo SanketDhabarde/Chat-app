@@ -81,6 +81,7 @@
 }
 
 
+
 .chat__receiverImg{
     margin-left: auto;
     background-color: #dcf8c6;
@@ -112,6 +113,30 @@
     display: flex;
 }
 
+.chat__emojis{
+    width: 200px;
+    height: auto;
+    padding: 10px;
+    
+}
+
+.chat__emoji{
+    margin: 5px;
+    cursor: pointer;
+}
+
+.MuiIconButton-colorPrimary{
+    color: #696969 !important;
+}
+
+.MuiSvgIcon-root{
+    color: #696969;
+}
+
+.MuiSvgIcon-root:hover{
+    color: #A9A9A9;
+}
+
 label input{
     width: 0;
     height: 0;
@@ -122,6 +147,7 @@ label{
     height: 30px;
     margin: 0 auto;
     padding-top: 6px;
+    cursor: pointer;
 }
 
 

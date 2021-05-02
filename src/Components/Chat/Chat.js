@@ -1,5 +1,5 @@
-import { Avatar, IconButton } from '@material-ui/core';
-import { AttachFile, DoubleArrow, InsertEmoticon, Mic, MoreVert, SearchOutlined } from '@material-ui/icons';
+import { Avatar, IconButton, Popover, Typography } from '@material-ui/core';
+import { AttachFile, DoubleArrow, InsertEmoticon, MoreVert, SearchOutlined } from '@material-ui/icons';
 import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import './Chat.css';
@@ -7,6 +7,7 @@ import db from '../../firebase';
 import firebase from 'firebase';
 import { AuthContext } from '../../context/auth-context';
 import { storage } from '../../firebase';
+
 
 function Chat() {
     const [input, setInput] = useState('');
@@ -16,6 +17,8 @@ function Chat() {
     const [roomName, setRoomName] = useState('');
     const [file, setFile] = useState(null);
     const [progress, setProgress] = useState(null);
+    const [anchorEl, setAnchorEl] = useState(null);
+   
 
     const authContext = useContext(AuthContext);
 
@@ -86,6 +89,27 @@ function Chat() {
             alert("please select file of type jpeg/png");
         }
     }
+  
+    const handleClick = (event) => {
+      setAnchorEl(event.currentTarget);
+    };
+    
+    const handleClose = () => {
+      setAnchorEl(null);
+    };
+    
+    const open = Boolean(anchorEl);
+    const id = open ? 'simple-popover' : undefined;
+
+    const emojis = ["😃", "😆", "😅", "🤣", "😂", "🙂", "😍", "😘", "😡", "😢", "😭", "🥱", "😫", "😱", "🥳", "😴", "🥴", "😷",
+                    "🤤", "😒", "🤩", "😜", "😋"];
+
+    const emojiHandler = (emoji) => {
+        setInput(prevInput => (
+            prevInput + emoji
+        ));
+        handleClose();
+    }
 
     return (
         <div className="chat">
@@ -127,9 +151,31 @@ function Chat() {
             </div>
 
             <div className="chat__footer">
-                <IconButton>
-                    <InsertEmoticon/>
-                </IconButton>
+                <div>
+                    <IconButton aria-describedby={id} variant="contained" color="primary" onClick={handleClick}>
+                        <InsertEmoticon/>
+                    </IconButton>
+                    <Popover
+                        id={id}
+                        open={open}
+                        anchorEl={anchorEl}
+                        onClose={handleClose}
+                        anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'left',
+                        }}
+                        transformOrigin={{
+                            vertical: 'bottom',
+                            horizontal: 'left',
+                        }}
+                    >
+                        <Typography className="chat__emojis">
+                            {emojis.map(emoji => (
+                                <span className="chat__emoji" onClick={() => emojiHandler(emoji)}>{emoji}</span>
+                            ))}
+                        </Typography>
+                    </Popover>
+                </div>
                 <label>
                     <input type="file" onChange={imageUploadHandler}/>
                     <span>
