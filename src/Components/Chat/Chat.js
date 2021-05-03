@@ -1,5 +1,5 @@
 import { Avatar, IconButton, Popover, Typography } from '@material-ui/core';
-import { AttachFile, DoubleArrow, InsertEmoticon, MoreVert, SearchOutlined } from '@material-ui/icons';
+import { AttachFile, DoubleArrow, InsertEmoticon } from '@material-ui/icons';
 import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import './Chat.css';
@@ -68,11 +68,16 @@ function Chat() {
         event.preventDefault();
         
         // add message to db
-        db.collection('rooms').doc(roomId).collection('messages').add({
-            name: authContext.user.displayName,
-            message: input,
-            timestamp: firebase.firestore.FieldValue.serverTimestamp()
-        });
+        if(input.length > 0){
+            db.collection('rooms').doc(roomId).collection('messages').add({
+                name: authContext.user.displayName,
+                message: input,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            });
+        }else{
+            alert("please enter valid message");
+        }
+       
 
         setInput('');
     }
@@ -134,7 +139,7 @@ function Chat() {
                 ): (
                     <div key={message.timestamp} className={`chat_Img ${ message.name === authContext.user.displayName && "chat__receiverImg"}`}>
                         <span className="chat__usernameImg">{message.name}</span>
-                        <img className="chat__image" src={message.url}></img>
+                        <img className="chat__image" src={message.url} alt=""></img>
                         <p className="chat__timestampImg">
                            {new Date(message.timestamp?.toDate()).toUTCString()}
                         </p>

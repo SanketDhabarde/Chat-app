@@ -19,11 +19,11 @@ function App() {
         <div className="app__body">
           <Router>
               <Switch>
-                  <Route path="/rooms/:roomId" exact>
+                  <Route path="/rooms/:roomId">
                       <Sidebar/>
                       <Chat/>
                   </Route>
-                  <Route path="/rooms" exact>
+                  <Route path="/rooms">
                     <Sidebar/>
                   </Route>
                   <Route path="/" exact>

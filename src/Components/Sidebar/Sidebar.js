@@ -1,13 +1,12 @@
 import { Avatar, IconButton, Menu, MenuItem} from '@material-ui/core';
 import { SearchOutlined } from '@material-ui/icons';
-import ChatIcon from '@material-ui/icons/Chat';
-import DonutLargeIcon from '@material-ui/icons/DonutLarge';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import React, { useEffect, useState, useContext, useRef } from 'react';
 import SidebarChat from '../SidebarChat/SidebarChat';
 import './Sidebar.css';
 import db from '../../firebase';
 import { AuthContext} from '../../context/auth-context';
+import { useHistory } from 'react-router-dom';
 
 
 function Sidebar() {
@@ -16,6 +15,7 @@ function Sidebar() {
     const [enteredFilter, setEnteredFilter] = useState('');
     const [filteredRooms, setFilteredRooms] = useState([]);
     const inputRef = useRef();
+    const history = useHistory();
 
     const [anchorEl, setAnchorEl] = useState(null);
 
@@ -65,9 +65,13 @@ function Sidebar() {
         const roomName = prompt("Add a room Name");
 
         // add into database
-        db.collection('rooms').add({
-            name: roomName,
-        });
+        if(roomName.length > 0){
+            db.collection('rooms').add({
+                name: roomName,
+            });
+        }else{
+            alert("please enter valid room name");
+        }
 
         setAnchorEl(null);
     }
@@ -75,20 +79,14 @@ function Sidebar() {
     const logout = () => {
         authContext.logout();
         setAnchorEl(null);
+        history.push("/");
     }
-
+    
     return (
         <div className="sidebar">
             <div className="sidebar__header">
-                <Avatar src={authContext.user && authContext.user.photoURL}/>
+                <Avatar className="sidebar__avatar" src={authContext.user && authContext.user.photoURL}/>
                 <div className="sidebar__headerRight">
-                    <IconButton>
-                        <DonutLargeIcon/>
-                    </IconButton>
-                    <IconButton>
-                        <ChatIcon/>
-                    </IconButton>
-                    
                     <div>
                         <IconButton aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
                             <MoreVertIcon/>      

@@ -10,11 +10,12 @@
     border-right: 1px solid lightgray;
 }
 
+
 .sidebar__headerRight{
     display: flex;
+    margin-left: 0;
     justify-content: space-between;
     align-items: center;
-    min-width: 10vw;
 }
 
 .sidebar__search{
