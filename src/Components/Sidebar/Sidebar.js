@@ -7,6 +7,7 @@ import './Sidebar.css';
 import db from '../../firebase';
 import { AuthContext} from '../../context/auth-context';
 import { useHistory } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 
 function Sidebar() {
@@ -70,7 +71,7 @@ function Sidebar() {
                 name: roomName,
             });
         }else{
-            alert("please enter valid room name");
+            toast.error("please enter valid room name", {position: 'top-center'});
         }
 
         setAnchorEl(null);

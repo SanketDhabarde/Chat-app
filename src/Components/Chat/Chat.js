@@ -7,8 +7,10 @@ import db from '../../firebase';
 import firebase from 'firebase';
 import { AuthContext } from '../../context/auth-context';
 import { storage } from '../../firebase';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-
+toast.configure();
 function Chat() {
     const [input, setInput] = useState('');
     const [seed, setSeed] = useState('');
@@ -22,7 +24,7 @@ function Chat() {
    
 
     const authContext = useContext(AuthContext);
-
+    // to collect all the messages from db
     useEffect(() => {
         if(roomId){
             // pull the name from db based on room id
@@ -41,6 +43,7 @@ function Chat() {
         }
     }, [roomId]);
 
+    // to upload images in db
     useEffect(() => {
         if(file){
             const storageRef=storage.ref(file.name);
@@ -49,7 +52,7 @@ function Chat() {
                 let progress= (snap.bytesTransferred/snap.totalBytes)*100;
                 setProgress(progress);
             }, (error) => {
-                alert(error.message);
+                toast.error(error.message, {position: 'top-center'});
             }, async () => {
                 const url = await storageRef.getDownloadURL();
                 const name= authContext.user.displayName;
@@ -59,11 +62,12 @@ function Chat() {
         }
     }, [file, authContext.user, roomId])
 
-
+    // for random avatars
     useEffect(()=> {
         setSeed(Math.floor(Math.random() * 5000));
     }, []);
 
+    // to scroll automatic upto bottom
     useEffect(() => {
         bottomRef.current.scrollIntoView({
             behavior: "smooth",
@@ -83,7 +87,7 @@ function Chat() {
                 timestamp: firebase.firestore.FieldValue.serverTimestamp()
             });
         }else{
-            alert("please enter valid message");
+            toast.error("please enter valid message", {position: 'top-center'});
         }
        
 
@@ -99,7 +103,7 @@ function Chat() {
             setFile(selected);
         }else{
             setFile(null);
-            alert("please select file of type jpeg/png");
+            toast.error("please select file of type jpeg/png", {position: 'top-center'});
         }
     }
   
@@ -145,18 +149,15 @@ function Chat() {
                             {new Date(message.timestamp?.toDate()).toUTCString()}
                             </span>
                     </p>
-                
-                    ): (
-                        
-                            <div key={message.timestamp} className={`chat_Img ${ message.name === authContext.user.displayName && "chat__receiverImg"}`}>
-                                <span className="chat__usernameImg">{message.name}</span>
-                                <img className="chat__image" src={message.url} alt=""></img>
-                                <p className="chat__timestampImg">
-                                {new Date(message.timestamp?.toDate()).toUTCString()}
-                                </p>
-                            </div> 
-                    
-                        
+
+                    ) : (
+                        <div key={message.timestamp} className={`chat_Img ${ message.name === authContext.user.displayName && "chat__receiverImg"}`}>
+                            <span className="chat__usernameImg">{message.name}</span>
+                            <img className="chat__image" src={message.url} alt=""></img>
+                            <p className="chat__timestampImg">
+                            {new Date(message.timestamp?.toDate()).toUTCString()}
+                            </p>
+                        </div>   
                     ))}  
                     <div ref={bottomRef}></div>  
             </div>
