@@ -1,6 +1,6 @@
 import { Avatar, IconButton, Popover, Typography } from '@material-ui/core';
 import { AttachFile, DoubleArrow, InsertEmoticon } from '@material-ui/icons';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import './Chat.css';
 import db from '../../firebase';
@@ -18,6 +18,7 @@ function Chat() {
     const [file, setFile] = useState(null);
     const [progress, setProgress] = useState(null);
     const [anchorEl, setAnchorEl] = useState(null);
+    const bottomRef = useRef();
    
 
     const authContext = useContext(AuthContext);
@@ -62,6 +63,13 @@ function Chat() {
     useEffect(()=> {
         setSeed(Math.floor(Math.random() * 5000));
     }, []);
+
+    useEffect(() => {
+        bottomRef.current.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+        });
+    }, [messages])
 
     
     const sendMessage = (event) => {
@@ -128,24 +136,29 @@ function Chat() {
             </div>
 
             <div className="chat__body">
-                {messages.map(message => !message.url ? (
+                    {messages.map(message => !message.url ? (
+                    
                     <p key={message.timestamp} className={`chat_message ${ message.name === authContext.user.displayName && "chat__receiver"}`}>
-                        <span className="chat__username">{message.name}</span>
-                        {message.message}
-                        <span className="chat__timestamp">
-                           {new Date(message.timestamp?.toDate()).toUTCString()}
-                        </span>
+                            <span className="chat__username">{message.name}</span>
+                            {message.message}
+                            <span className="chat__timestamp">
+                            {new Date(message.timestamp?.toDate()).toUTCString()}
+                            </span>
                     </p>
-                ): (
-                    <div key={message.timestamp} className={`chat_Img ${ message.name === authContext.user.displayName && "chat__receiverImg"}`}>
-                        <span className="chat__usernameImg">{message.name}</span>
-                        <img className="chat__image" src={message.url} alt=""></img>
-                        <p className="chat__timestampImg">
-                           {new Date(message.timestamp?.toDate()).toUTCString()}
-                        </p>
-                    </div> 
-                ))}
-                   
+                
+                    ): (
+                        
+                            <div key={message.timestamp} className={`chat_Img ${ message.name === authContext.user.displayName && "chat__receiverImg"}`}>
+                                <span className="chat__usernameImg">{message.name}</span>
+                                <img className="chat__image" src={message.url} alt=""></img>
+                                <p className="chat__timestampImg">
+                                {new Date(message.timestamp?.toDate()).toUTCString()}
+                                </p>
+                            </div> 
+                    
+                        
+                    ))}  
+                    <div ref={bottomRef}></div>  
             </div>
 
             <div className="chat__footer">
