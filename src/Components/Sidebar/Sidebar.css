@@ -54,6 +54,7 @@
     overflow-y: scroll; 
 }
 
+
 ::-webkit-scrollbar {
     width: 6px!important;
     height: 6px!important;

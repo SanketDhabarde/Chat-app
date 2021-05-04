@@ -19,3 +19,7 @@ a{
     margin-left: 10px;
     flex: 1;
 }
+
+a.sidebarChat__active > div{
+    background-color: #ebebeb;
+}
