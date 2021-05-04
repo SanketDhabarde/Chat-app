@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import './SidebarChat.css';
 import db from '../../firebase';
 import { Link } from 'react-router-dom';
+import { Image } from '@material-ui/icons';
 
 function SidebarChat({id, name}) {
     const [seed, setSeed] = useState('');
@@ -29,7 +30,7 @@ function SidebarChat({id, name}) {
                 <Avatar src={`https://avatars.dicebear.com/api/human/${seed}.svg`}/>
                 <div className="sidebarChat__info">
                     <h3>{name}</h3>
-                    <p>{messages[0]?.message}</p>
+                    <p>{messages[0].message ? messages[0].message : <Image/>}</p>
                 </div>
             </div>
         </Link>
