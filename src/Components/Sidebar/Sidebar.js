@@ -1,5 +1,5 @@
 import { Avatar, IconButton, Menu, MenuItem} from '@material-ui/core';
-import { SearchOutlined } from '@material-ui/icons';
+import { SearchOutlined, Chat } from '@material-ui/icons';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import React, { useEffect, useState, useContext, useRef } from 'react';
 import SidebarChat from '../SidebarChat/SidebarChat';
@@ -62,10 +62,10 @@ function Sidebar() {
 
     
     const addNewChat = () => {
-        const roomName = prompt("Add a room Name");
+        const roomName = prompt("Add a chat room Name");
 
         // add into database
-        if(roomName.length > 0){
+        if(roomName && roomName.length > 0){
             db.collection('rooms').add({
                 name: roomName,
             });
@@ -87,6 +87,10 @@ function Sidebar() {
             <div className="sidebar__header">
                 <Avatar className="sidebar__avatar" src={authContext.user && authContext.user.photoURL}/>
                 <div className="sidebar__headerRight">
+                    <IconButton onClick={addNewChat}>
+                        <Chat/>
+                    </IconButton>
+                    
                     <div>
                         <IconButton aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
                             <MoreVertIcon/>      
@@ -98,7 +102,6 @@ function Sidebar() {
                             open={Boolean(anchorEl)}
                             onClose={handleClose}
                         >
-                            <MenuItem onClick={addNewChat}>Add room</MenuItem>
                             <MenuItem onClick={logout}>logout</MenuItem>
                         </Menu>
                     </div>
