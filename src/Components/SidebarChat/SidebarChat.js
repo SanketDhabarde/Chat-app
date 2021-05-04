@@ -30,7 +30,7 @@ function SidebarChat({id, name}) {
                 <Avatar src={`https://avatars.dicebear.com/api/human/${seed}.svg`}/>
                 <div className="sidebarChat__info">
                     <h3>{name}</h3>
-                    <p>{messages[0].message ? messages[0].message : <Image/>}</p>
+                    <p>{messages[0]?.message ? messages[0].message.substring(0,10) + '...' : <Image/>}</p>
                 </div>
             </div>
         </Link>

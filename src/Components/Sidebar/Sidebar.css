@@ -72,3 +72,11 @@
     background: hsla(0,0%,100%,.1);
 }
 
+@media (max-width: 600px){
+    .sidebar{
+        width: 30%;
+    }
+    .sidebar__searchContainer > input{
+        width: 30%;
+    }
+}

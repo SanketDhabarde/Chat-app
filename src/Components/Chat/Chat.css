@@ -180,3 +180,9 @@ label{
 ::-webkit-scrollbar-track {
     background: hsla(0,0%,100%,.1);
 }
+
+@media (max-width: 600px){
+    .chat{
+        width: 70%;
+    }
+}
