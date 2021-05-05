@@ -1,5 +1,5 @@
 import { Avatar, IconButton, Popover, Typography } from '@material-ui/core';
-import { AttachFile, DoubleArrow, InsertEmoticon } from '@material-ui/icons';
+import { AttachFile, DoubleArrow, InsertEmoticon, Mic } from '@material-ui/icons';
 import React, { useContext, useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import './Chat.css';
@@ -9,6 +9,17 @@ import { AuthContext } from '../../context/auth-context';
 import { storage } from '../../firebase';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
+
+// speech recognition
+const speechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+const mic = new speechRecognition();
+
+mic.continuous = true;
+mic.interimResults = true;
+mic.lang = 'en-US';
+
 
 toast.configure();
 function Chat() {
@@ -20,6 +31,8 @@ function Chat() {
     const [file, setFile] = useState(null);
     const [progress, setProgress] = useState(null);
     const [anchorEl, setAnchorEl] = useState(null);
+    const [isListening, setIsListening] = useState(false);
+    const [color, setColor] = useState(null);
     const bottomRef = useRef();
    
 
@@ -73,7 +86,46 @@ function Chat() {
             behavior: "smooth",
             block: "start",
         });
-    }, [messages])
+    }, [messages]);
+
+    // convert audio to text
+    useEffect(() =>{
+        handleListen();
+    },[isListening])
+
+    const handleListen = () =>{
+        if(isListening){
+            mic.start();
+            setColor({color: 'green'});
+            mic.onend = () => {
+                console.log("continue...");
+                mic.start();
+            }
+        }else{
+            mic.stop();
+            mic.onend = () => {
+                console.log("mic stopped");
+                setColor(null);
+            }
+        }
+
+        mic.onstart =() =>{
+            console.log("mic on!!");
+        }
+
+        mic.onresult = (event) =>{
+            const transcript = Array.from(event.results)
+                .map(result => result[0])
+                .map(result => result.transcript)
+                .join('')
+            setInput(transcript);
+            // console.log(transcript);
+            mic.onerror = (e) =>{
+                console.log(e.error);
+            }
+        }
+
+    }
 
     
     const sendMessage = (event) => {
@@ -201,6 +253,10 @@ function Chat() {
                         <DoubleArrow/>
                     </IconButton>
                 </form>
+                <IconButton onClick={() => setIsListening(prevState => !prevState)}>
+                    <Mic style={color}/>
+                </IconButton>
+                
             </div>
 
             
