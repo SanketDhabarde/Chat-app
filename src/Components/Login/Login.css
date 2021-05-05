@@ -25,3 +25,9 @@
     color: white;
     margin-top: 50px;
 }
+
+.login__googleLogo{
+    object-fit: contain;
+    height: 20px;
+    margin-right: 10px;
+}
