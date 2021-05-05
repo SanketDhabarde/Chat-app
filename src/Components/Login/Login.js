@@ -20,7 +20,7 @@ function Login() {
                      <h2>Sign in to WhatsApp-Clone</h2>
                  </div>
                 <Link to="/rooms">
-                    <Button onClick={signin}><img className="login__googleLogo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/768px-Google_%22G%22_Logo.svg.png"/>Sign in with Google</Button>
+                    <Button onClick={signin}><img className="login__googleLogo" alt="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/768px-Google_%22G%22_Logo.svg.png"/>Sign in with Google</Button>
                 </Link>
                  
             </div>

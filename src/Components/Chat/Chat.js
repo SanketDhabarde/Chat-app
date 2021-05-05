@@ -73,7 +73,7 @@ function Chat() {
                 db.collection('rooms').doc(roomId).collection('messages').add({name, timestamp, url})
             })
         }
-    }, [file, authContext.user, roomId])
+    }, [file, authContext.user])
 
     // for random avatars
     useEffect(()=> {
