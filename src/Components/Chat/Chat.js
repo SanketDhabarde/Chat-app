@@ -249,9 +249,10 @@ function Chat() {
                 
                 <form>
                     <input type="text" value={input} onChange={e => setInput(e.target.value)} placeholder="write a message"/>
-                    <IconButton type="submit" onClick={sendMessage}>
+                   { input &&  
+                   <IconButton type="submit" onClick={sendMessage}>
                         <DoubleArrow/>
-                    </IconButton>
+                    </IconButton> }
                 </form>
                 <IconButton onClick={() => setIsListening(prevState => !prevState)}>
                     <Mic style={color}/>

@@ -75,9 +75,12 @@
 
 @media (max-width: 600px){
     .sidebar{
-        width: 30%;
+        width: 35%;
+    }
+    .sidebar__header{
+        display: block;
     }
     .sidebar__searchContainer > input{
-        width: 30%;
+        width: 35%;
     }
 }
