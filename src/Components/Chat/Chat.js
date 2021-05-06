@@ -22,7 +22,7 @@ mic.lang = 'en-US';
 
 
 toast.configure();
-function Chat() {
+function Chat({setSelectedImage}) {
     const [input, setInput] = useState('');
     const [seed, setSeed] = useState('');
     const { roomId } = useParams();
@@ -205,7 +205,7 @@ function Chat() {
                     ) : (
                         <div key={message.timestamp} className={`chat_Img ${ message.name === authContext.user.displayName && "chat__receiverImg"}`}>
                             <span className="chat__usernameImg">{message.name}</span>
-                            <img className="chat__image" src={message.url} alt=""></img>
+                            <img onClick={() => setSelectedImage(message.url)} className="chat__image" src={message.url} alt=""></img>
                             <p className="chat__timestampImg">
                             {new Date(message.timestamp?.toDate()).toUTCString()}
                             </p>

@@ -1,13 +1,15 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 import './App.css';
 import Chat from './Components/Chat/Chat';
 import Login from './Components/Login/Login';
+import Modal from './Components/Modal/Modal';
 import Sidebar from './Components/Sidebar/Sidebar';
 import { AuthContext } from './context/auth-context'; 
 
 function App() {
   const authContext = useContext(AuthContext);
+  const [selectedImage, setSelectedImage] = useState(null);
   
   return (
     <div className="app">
@@ -21,7 +23,7 @@ function App() {
               <Switch>
                   <Route path="/rooms/:roomId">
                       <Sidebar/>
-                      <Chat/>
+                      <Chat setSelectedImage={setSelectedImage}/>
                   </Route>
                   <Route path="/rooms">
                     <Sidebar/>
@@ -34,7 +36,9 @@ function App() {
           
         </div>
       )}  
+      {selectedImage && <Modal selectedImage={selectedImage} setSelectedImage={setSelectedImage} />}
     </div>
+    
   );
 }
 
