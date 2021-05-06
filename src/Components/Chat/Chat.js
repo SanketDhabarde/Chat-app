@@ -9,6 +9,7 @@ import { AuthContext } from '../../context/auth-context';
 import { storage } from '../../firebase';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Spinner from '../Spinner/Spinner';
 
 
 // speech recognition
@@ -33,6 +34,7 @@ function Chat({setSelectedImage}) {
     const [anchorEl, setAnchorEl] = useState(null);
     const [isListening, setIsListening] = useState(false);
     const [color, setColor] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
     const bottomRef = useRef();
    
 
@@ -60,9 +62,10 @@ function Chat({setSelectedImage}) {
     useEffect(() => {
         if(file){
             const storageRef=storage.ref(file.name);
-
+            setIsLoading(true);
             storageRef.put(file).on('state_changed', (snap) => {
                 let progress= (snap.bytesTransferred/snap.totalBytes)*100;
+                console.log(progress);
                 setProgress(progress);
             }, (error) => {
                 toast.error(error.message, {position: 'top-center'});
@@ -70,7 +73,8 @@ function Chat({setSelectedImage}) {
                 const url = await storageRef.getDownloadURL();
                 const name= authContext.user.displayName;
                 const timestamp = firebase.firestore.FieldValue.serverTimestamp();
-                db.collection('rooms').doc(roomId).collection('messages').add({name, timestamp, url})
+                db.collection('rooms').doc(roomId).collection('messages').add({name, timestamp, url});
+                setIsLoading(false);
             })
         }
     }, [file, authContext.user])
@@ -153,6 +157,7 @@ function Chat({setSelectedImage}) {
 
         if(selected && types.includes(selected.type)){
             setFile(selected);
+            setIsLoading(true);
         }else{
             setFile(null);
             toast.error("please select file of type jpeg/png", {position: 'top-center'});
@@ -209,8 +214,14 @@ function Chat({setSelectedImage}) {
                             <p className="chat__timestampImg">
                             {new Date(message.timestamp?.toDate()).toUTCString()}
                             </p>
-                        </div>   
+                            
+                        </div>  
                     ))}  
+                   {isLoading && 
+                        <div className="chat_message chat__receiver">
+                            <Spinner/>
+                        </div>
+                        } 
                     <div ref={bottomRef}></div>  
             </div>
 
