@@ -30,7 +30,6 @@ function Chat({setSelectedImage}) {
     const [messages, setMessages] = useState([]);
     const [roomName, setRoomName] = useState('');
     const [file, setFile] = useState(null);
-    const [progress, setProgress] = useState(null);
     const [anchorEl, setAnchorEl] = useState(null);
     const [isListening, setIsListening] = useState(false);
     const [color, setColor] = useState(null);
@@ -66,7 +65,6 @@ function Chat({setSelectedImage}) {
             storageRef.put(file).on('state_changed', (snap) => {
                 let progress= (snap.bytesTransferred/snap.totalBytes)*100;
                 console.log(progress);
-                setProgress(progress);
             }, (error) => {
                 toast.error(error.message, {position: 'top-center'});
             }, async () => {
@@ -77,7 +75,7 @@ function Chat({setSelectedImage}) {
                 setIsLoading(false);
             })
         }
-    }, [file, authContext.user])
+    }, [file, authContext.user, roomId])
 
     // for random avatars
     useEffect(()=> {
@@ -94,10 +92,6 @@ function Chat({setSelectedImage}) {
 
     // convert audio to text
     useEffect(() =>{
-        handleListen();
-    },[isListening])
-
-    const handleListen = () =>{
         if(isListening){
             mic.start();
             setColor({color: 'green'});
@@ -128,8 +122,7 @@ function Chat({setSelectedImage}) {
                 console.log(e.error);
             }
         }
-
-    }
+    },[isListening])
 
     
     const sendMessage = (event) => {
