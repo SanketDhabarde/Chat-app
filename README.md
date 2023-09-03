@@ -13,4 +13,4 @@
 4. Firebase storage for images
 5. Material-ui for icons
 
-[live link](https://chat-app-4f37d.web.app/)
+[live link](https://always-chat.netlify.app/)
